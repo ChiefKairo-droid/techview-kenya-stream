@@ -1,7 +1,7 @@
 
 import VideoCard from './VideoCard';
 
-// Mock data for videos
+// Expanded mock data for tech and engineering videos
 const videos = [
   {
     id: 1,
@@ -74,12 +74,48 @@ const videos = [
     duration: "21:40",
     timestamp: "3 days ago",
     thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 9,
+    title: "5G Network Rollout in Kenya: What It Means for Developers",
+    channel: "Network Kenya",
+    views: "1.5M views",
+    duration: "14:30",
+    timestamp: "2 days ago",
+    thumbnail: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 10,
+    title: "Machine Learning in Healthcare: Kenyan Innovations",
+    channel: "HealthTech Africa",
+    views: "890K views",
+    duration: "20:15",
+    timestamp: "1 day ago",
+    thumbnail: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 11,
+    title: "Drone Technology for Wildlife Conservation in Kenya",
+    channel: "ConservationTech",
+    views: "520K views",
+    duration: "17:45",
+    timestamp: "5 days ago",
+    thumbnail: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    id: 12,
+    title: "Solar Energy Engineering: Powering Rural Kenya",
+    channel: "GreenTech Kenya",
+    views: "1.1M views",
+    duration: "23:20",
+    timestamp: "1 week ago",
+    thumbnail: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
   }
 ];
 
 const VideoGrid = () => {
   return (
-    <section className="container px-4 md:px-6 py-8">
+    <section className="container px-4 md:px-6 py-8 pb-20 md:pb-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {videos.map((video) => (
           <VideoCard

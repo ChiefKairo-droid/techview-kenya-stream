@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 const Footer = () => {
   return (
-    <footer className="bg-streaming-dark text-white mt-16">
+    <footer className="hidden md:block bg-streaming-dark text-white mt-16">
       <div className="container px-4 md:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}

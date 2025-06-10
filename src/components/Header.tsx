@@ -1,8 +1,9 @@
 
 import { useState } from 'react';
-import { Search, Menu, User, Bell, Upload } from 'lucide-react';
+import { Search, Bell, Upload, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,9 +13,7 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo and Menu */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
+          <SidebarTrigger className="md:flex hidden" />
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg gradient-kenya"></div>
             <h1 className="text-xl font-bold bg-gradient-to-r from-kenya-red to-kenya-green bg-clip-text text-transparent">
@@ -47,10 +46,10 @@ const Header = () => {
           <Button variant="ghost" size="icon" className="md:hidden">
             <Search className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="hidden md:flex">
             <Upload className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="hidden md:flex">
             <Bell className="h-5 w-5" />
           </Button>
           <Button variant="ghost" size="icon" className="rounded-full">
