@@ -1,7 +1,10 @@
 
 import { Clock, Eye, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import VideoMenu from './VideoMenu';
 
 interface VideoCardProps {
+  id: number;
   title: string;
   channel: string;
   views: string;
@@ -12,6 +15,7 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ 
+  id,
   title, 
   channel, 
   views, 
@@ -20,8 +24,14 @@ const VideoCard = ({
   thumbnail,
   channelAvatar 
 }: VideoCardProps) => {
+  const navigate = useNavigate();
+
+  const handleVideoClick = () => {
+    navigate(`/watch/${id}`);
+  };
+
   return (
-    <div className="group cursor-pointer video-hover">
+    <div className="group cursor-pointer video-hover" onClick={handleVideoClick}>
       {/* Thumbnail */}
       <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
         <img 
@@ -31,6 +41,14 @@ const VideoCard = ({
         />
         <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
           {duration}
+        </div>
+        {/* Video Menu */}
+        <div className="absolute top-2 right-2">
+          <VideoMenu 
+            videoId={id.toString()} 
+            videoTitle={title}
+            videoUrl={`${window.location.origin}/watch/${id}`}
+          />
         </div>
       </div>
 

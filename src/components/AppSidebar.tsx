@@ -1,5 +1,6 @@
 
 import { Home, TrendingUp, History, Clock, ThumbsUp, PlaySquare, Folder, Download, User, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -31,12 +32,12 @@ export function AppSidebar() {
   return (
     <Sidebar className="hidden md:flex">
       <SidebarHeader className="p-4">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg gradient-kenya"></div>
           <h2 className="text-lg font-bold bg-gradient-to-r from-kenya-red to-kenya-green bg-clip-text text-transparent">
             TechView Kenya
           </h2>
-        </div>
+        </Link>
       </SidebarHeader>
       
       <SidebarContent>
@@ -46,10 +47,10 @@ export function AppSidebar() {
               {navigation.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-3">
+                    <Link to={item.url} className="flex items-center gap-3">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -64,10 +65,10 @@ export function AppSidebar() {
               {library.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-3">
+                    <Link to={item.url} className="flex items-center gap-3">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -80,18 +81,18 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/profile" className="flex items-center gap-3">
+              <Link to="/profile" className="flex items-center gap-3">
                 <User className="h-5 w-5" />
                 <span>Profile</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/settings" className="flex items-center gap-3">
+              <Link to="/settings" className="flex items-center gap-3">
                 <Settings className="h-5 w-5" />
                 <span>Settings</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

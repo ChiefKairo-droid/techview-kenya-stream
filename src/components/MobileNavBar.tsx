@@ -1,7 +1,7 @@
 
 import { Home, Search, Upload, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const MobileNavBar = () => {
   const location = useLocation();
@@ -22,17 +22,18 @@ const MobileNavBar = () => {
           const isActive = location.pathname === item.path;
           
           return (
-            <Button
-              key={item.path}
-              variant="ghost"
-              size="sm"
-              className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
-                isActive ? 'text-tech-blue' : 'text-muted-foreground'
-              }`}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="text-xs">{item.label}</span>
-            </Button>
+            <Link key={item.path} to={item.path}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
+                  isActive ? 'text-tech-blue' : 'text-muted-foreground'
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+                <span className="text-xs">{item.label}</span>
+              </Button>
+            </Link>
           );
         })}
       </div>
