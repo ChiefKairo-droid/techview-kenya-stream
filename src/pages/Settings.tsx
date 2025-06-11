@@ -15,8 +15,38 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Play, Bell, Shield, Eye, Palette, Volume2, Accessibility } from 'lucide-react';
 
+interface NotificationSettings {
+  email: boolean;
+  push: boolean;
+  subscriptions: boolean;
+  comments: boolean;
+}
+
+interface PrivacySettings {
+  watchHistory: boolean;
+  searchHistory: boolean;
+  publicProfile: boolean;
+}
+
+interface AccessibilitySettings {
+  fontSize: string;
+  highContrast: boolean;
+  screenReader: boolean;
+}
+
+interface SettingsState {
+  autoplay: boolean;
+  quality: string;
+  captions: boolean;
+  volume: number[];
+  theme: string;
+  notifications: NotificationSettings;
+  privacy: PrivacySettings;
+  accessibility: AccessibilitySettings;
+}
+
 const Settings = () => {
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<SettingsState>({
     autoplay: true,
     quality: 'auto',
     captions: false,
@@ -40,14 +70,35 @@ const Settings = () => {
     }
   });
 
-  const handleSettingChange = (category: string, key: string, value: any) => {
-    setSettings(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category as keyof typeof prev],
-        [key]: value
+  const handleSettingChange = (category: keyof SettingsState, key: string, value: any) => {
+    setSettings(prev => {
+      if (category === 'notifications') {
+        return {
+          ...prev,
+          notifications: {
+            ...prev.notifications,
+            [key]: value
+          }
+        };
+      } else if (category === 'privacy') {
+        return {
+          ...prev,
+          privacy: {
+            ...prev.privacy,
+            [key]: value
+          }
+        };
+      } else if (category === 'accessibility') {
+        return {
+          ...prev,
+          accessibility: {
+            ...prev.accessibility,
+            [key]: value
+          }
+        };
       }
-    }));
+      return prev;
+    });
   };
 
   return (
