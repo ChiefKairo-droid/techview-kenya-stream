@@ -35,7 +35,7 @@ export function AppSidebar() {
         <Link to="/" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg gradient-kenya"></div>
           <h2 className="text-lg font-bold bg-gradient-to-r from-kenya-red to-kenya-green bg-clip-text text-transparent">
-            TechView Kenya
+            TechView TV
           </h2>
         </Link>
       </SidebarHeader>
