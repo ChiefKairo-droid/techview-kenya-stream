@@ -1,36 +1,65 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
+import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    agreeToTerms: false,
-  });
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     
-    // Simulate signup process
-    setTimeout(() => {
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast({
+          title: "Signup Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Please check your email to confirm your account",
+        });
+        navigate('/login');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-      console.log('Signup attempt:', formData);
-    }, 1000);
+    }
   };
 
   return (
@@ -43,89 +72,48 @@ const Signup = () => {
               TechView Kenya
             </h1>
           </div>
-          <CardTitle>Create Account</CardTitle>
+          <CardTitle>{t('createAccount')}</CardTitle>
           <CardDescription>
-            Join the Kenya tech community
+            {t('joinCommunity')}
           </CardDescription>
         </CardHeader>
         
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-2">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="John"
-                  value={formData.firstName}
-                  onChange={(e) => handleInputChange('firstName', e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Doe"
-                  value={formData.lastName}
-                  onChange={(e) => handleInputChange('lastName', e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
+                placeholder={t('enterEmail')}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('password')}</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="Create a strong password"
-                value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
+                placeholder={t('enterPassword')}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">{t('confirmPassword')}</Label>
               <Input
                 id="confirmPassword"
                 type="password"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                placeholder={t('confirmPassword')}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="terms" 
-                checked={formData.agreeToTerms}
-                onCheckedChange={(checked) => handleInputChange('agreeToTerms', checked as boolean)}
-              />
-              <Label htmlFor="terms" className="text-sm">
-                I agree to the{' '}
-                <Link to="/terms" className="text-tech-blue hover:underline">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="text-tech-blue hover:underline">
-                  Privacy Policy
-                </Link>
-              </Label>
             </div>
           </CardContent>
           
@@ -133,15 +121,15 @@ const Signup = () => {
             <Button 
               type="submit" 
               className="w-full bg-tech-blue hover:bg-tech-blue/90"
-              disabled={isLoading || !formData.agreeToTerms}
+              disabled={isLoading}
             >
-              {isLoading ? 'Creating account...' : 'Create Account'}
+              {isLoading ? 'Creating Account...' : t('signUp')}
             </Button>
             
             <p className="text-sm text-muted-foreground text-center">
-              Already have an account?{' '}
+              {t('alreadyHaveAccount')}{' '}
               <Link to="/login" className="text-tech-blue hover:underline">
-                Sign in
+                {t('signIn')}
               </Link>
             </p>
           </CardFooter>

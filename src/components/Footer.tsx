@@ -1,7 +1,11 @@
 
+import { useTranslation } from 'react-i18next';
+
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
-    <footer className="hidden md:block bg-streaming-dark text-white mt-16">
+    <footer className="hidden md:block bg-streaming-dark dark:bg-gray-900 text-white border-t border-gray-800 dark:border-gray-700">
       <div className="container px-4 md:px-6 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -9,7 +13,7 @@ const Footer = () => {
             <h3 className="text-lg font-bold">TechView TV</h3>
           </div>
           <p className="text-gray-300 text-sm">
-            © 2024 TechView Kenya. All rights reserved.
+            {t('allRightsReserved')}
           </p>
         </div>
       </div>

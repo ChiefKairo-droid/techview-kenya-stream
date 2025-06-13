@@ -1,12 +1,18 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -15,11 +21,34 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate login process
-    setTimeout(() => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast({
+          title: "Login Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in",
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-      console.log('Login attempt:', { email, password });
-    }, 1000);
+    }
   };
 
   return (
@@ -32,20 +61,20 @@ const Login = () => {
               TechView Kenya
             </h1>
           </div>
-          <CardTitle>Sign In</CardTitle>
+          <CardTitle>{t('signIn')}</CardTitle>
           <CardDescription>
-            Enter your credentials to access your account
+            {t('welcomeBack')}
           </CardDescription>
         </CardHeader>
         
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t('enterEmail')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -53,11 +82,11 @@ const Login = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('password')}</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t('enterPassword')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -66,7 +95,7 @@ const Login = () => {
             
             <div className="flex items-center justify-between text-sm">
               <Link to="/forgot-password" className="text-tech-blue hover:underline">
-                Forgot password?
+                {t('forgotPassword')}
               </Link>
             </div>
           </CardContent>
@@ -77,13 +106,13 @@ const Login = () => {
               className="w-full bg-tech-blue hover:bg-tech-blue/90"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? 'Signing in...' : t('signIn')}
             </Button>
             
             <p className="text-sm text-muted-foreground text-center">
-              Don't have an account?{' '}
+              {t('dontHaveAccount')}{' '}
               <Link to="/signup" className="text-tech-blue hover:underline">
-                Sign up
+                {t('signUp')}
               </Link>
             </p>
           </CardFooter>
